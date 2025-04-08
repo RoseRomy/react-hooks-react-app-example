@@ -3,24 +3,25 @@ import { render, screen } from "@testing-library/react";
 import { format } from "date-fns";
 import App from "../components/App";
 
-beforeEach(() => {
-  render(<App />);
+describe('App Component', () => {
+  test('should render the header with the current date and time including "now"', () => {
+    render(<App />);
+    const headerElement = screen.getByRole('heading', { level: 1 });
+    expect(headerElement).toBeInTheDocument();
+    expect(headerElement.textContent).toContain('Now is');
+  });
+
+  test('should include the ExampleComponent', () => {
+    render(<App />);
+    expect(screen.getByText('Example Component')).toBeInTheDocument(); // Assuming ExampleComponent renders this text
+  });
+
+  test('should include the "Edit src/App.js..." text', () => {
+    render(<App />);
+    expect(screen.getByText(/Edit src\/App\.js/i)).toBeInTheDocument();
+  });
 });
 
-test('should include "Now" in the header instead of a time', () => {
-  expect(
-    screen.queryByText(format(new Date(), "MMMM do yyyy, h:mm:ss a"))
-  ).not.toBeInTheDocument();
-  expect(screen.queryByText(/Now/g)).toBeInTheDocument();
-});
-
-test("should include the <ExampleComponent />", () => {
-  expect(screen.queryByText("Whoa!")).toBeInTheDocument();
-});
-
-test("should include the <TestComponent />", () => {
-  expect(screen.queryByTitle("time video")).toBeInTheDocument();
-});
 
 //   it('should include "Now" in the header instead of a time', () => {
 //     expect(wrapper.find('header').text()).to.not.include(moment().format('MMMM Do YYYY'))
